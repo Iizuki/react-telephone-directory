@@ -7,13 +7,19 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      persons: [
-        { name: 'Example Name',
-          number: '123-456789'}
-      ],
+      persons: [],
       newName: '',
       newNumber: ''
     }
+  }
+
+  //Loads the list of persons from the server
+  componentDidMount(){
+    Server
+      .getAll()
+      .then(response => {
+        this.setState({persons: response})
+      })
   }
 
   //Form event handlers keeping the newName and newNumber states up to date.
@@ -29,13 +35,16 @@ class App extends React.Component {
       name: this.state.newName,
       number: this.state.newNumber
     }
-    const nextPersons = this.state.persons.concat(newPerson)
 
-    this.setState({
-      persons: nextPersons,
-      newName: '',
-      newNumber: ''
-    })
+    Server
+      .create(newPerson)
+      .then(returnedPerson => {
+        this.setState({
+          persons: this.state.persons.concat(returnedPerson),
+          newName: '',
+          newNumber: ''
+        })
+      })
   }
 
   //Checks if the added name is a duplicate (two persons can still have same numbers)
@@ -46,6 +55,18 @@ class App extends React.Component {
       alert(`Name '${this.state.newName}' already exists!`)
     }
     return duplicate
+  }
+
+  //Button event handler factory for the romeve buttons
+  removePerson = (person) => (event) => {
+    event.preventDefault()
+    Server
+      .remove(person)
+      .then(() => {
+        this.setState({
+          persons: this.state.persons.filter(filterPerson => person.id !== filterPerson.id)
+        })
+      })
   }
 
   render() {
@@ -60,7 +81,10 @@ class App extends React.Component {
           addPerson={this.addPerson}
         />
         <h2>Numbers</h2>
-        <Persons personList={this.state.persons}/>
+        <Persons 
+          personList={this.state.persons}
+          buttonHandlerFactory={this.removePerson}
+        />
       </div>
     )
   }

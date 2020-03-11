@@ -1,24 +1,24 @@
 {
-    "persons": [
-      {
-        "name": "Example Person",
-        "number": "040-123456",
-        "id": 1
-      },
-      {
-        "name": "Second Example",
-        "number": "050-123456",
-        "id": 2
-      },
-      {
-        "name": "My Name",
-        "number": "060-123456",
-        "id": 3
-      },
-      {
-        "name": "Longer Name",
-        "number": "070-123456",
-        "id": 4
-      }
-    ]
+  "persons": [
+    {
+      "name": "Example Person",
+      "number": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Second Example",
+      "number": "050-123456",
+      "id": 2
+    },
+    {
+      "name": "My Name",
+      "number": "060-123456",
+      "id": 3
+    },
+    {
+      "name": "Longer Name",
+      "number": "070-123456",
+      "id": 4
+    }
+  ]
 }

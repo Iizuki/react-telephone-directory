@@ -1,15 +1,28 @@
 import React from 'react';
 
 //A small component that arranges the list of persons to jsx.
-const Persons = ({personList}) => {
-    const rows = personList.map(person => <tr key={person.name}><td>{person.name}</td><td>{person.number}</td></tr>)
+const Persons = ({personList, buttonHandlerFactory}) => {
+
+  const RemoveButton = (person) => {
     return (
-      <table>
-        <tbody>
-          {rows}
-        </tbody>
-      </table> 
+      <form onSubmit={buttonHandlerFactory(person)}>
+        <button type="submit">remove</button>
+      </form>
     )
   }
 
-  export default Persons
+  const rows = personList.map(person => 
+    <tr key={person.id}><td>{person.name}</td><td>{person.number}</td><td>{RemoveButton(person)}</td></tr>
+  )
+
+  return (
+    <table>
+      <tbody>
+        {rows}
+      </tbody>
+    </table> 
+  )
+}
+
+
+export default Persons

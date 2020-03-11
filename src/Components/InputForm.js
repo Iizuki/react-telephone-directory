@@ -11,7 +11,7 @@ const InputForm = ({newName,onNameChange,newNumber,onNumberChange,addPerson}) =>
         />
       </div>
       <div>
-          numero: <input 
+          number: <input 
           value={newNumber}
           onChange={onNumberChange}
           />

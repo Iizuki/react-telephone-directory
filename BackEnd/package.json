@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Node backend for the telephone directory react app.",
-  "main": "BackEnd/index.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "watch": "nodemon index.js",

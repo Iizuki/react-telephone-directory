@@ -1,1 +1,7 @@
-/home/iizuki/LinuxCryptStorage/Yliopisto/Tietotekniikka/Web- ja mobiiliohjelmointi/Harjoitukset/3/react-telephone-directory/BackEnd/package.json
+{
+    "name": "phone-directory",
+    "version": "1.0.0",
+    "scripts": {
+      "postinstall": "npm install --prefix BackEnd && npm install --prefix FrontEnd"
+    }
+}

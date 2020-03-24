@@ -1,4 +1,4 @@
 # React-telephone-directory
-A simple telephone directory app implementated with react.
+A simple telephone directory app implementated with react frontend and node backend.
 
-Assumes that the json server is found at port 3001.
+Deployable to Heroku.

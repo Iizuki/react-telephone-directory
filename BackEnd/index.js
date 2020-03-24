@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const Person = require('./modules/mongooseDB')
 
 const PORT = process.env.PORT || 3001
 const app = express()
@@ -11,6 +12,7 @@ app.use(express.static('../FrontEnd/build'))
 
 
 
+//to be deleted
 let persons = [
     {
       "name": "Example Person",
@@ -36,9 +38,13 @@ let persons = [
 
 //Route for handling whole collection requests
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person
+    .find({})
+    .then(people => res.json(people))
+    .catch(error => console.log(error))
 })
 
+//TODO
 //Route for handling single person requests
 app.get('/api/persons/:id', (request, response) => {
   const id = request.params.id
@@ -51,6 +57,7 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
+//TODO
 //Route for handling the removal of individual persons
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
@@ -59,6 +66,7 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
+//TODO
 //Route handling the addition of new persons
 app.post('/api/persons', (request, response) => {
   const body = request.body

@@ -45,6 +45,9 @@ class App extends React.Component {
           newNumber: ''
         })
       })
+      .catch(error => {
+        alert(error.response.data.error)
+      })
   }
 
   //Checks if the added name is a duplicate (two persons can still have same numbers)
@@ -60,6 +63,10 @@ class App extends React.Component {
   //Button event handler factory for the romeve buttons
   removePerson = (person) => (event) => {
     event.preventDefault()
+    //Ask the user for confirmation.
+    if (!window.confirm(`Do you really want to remove ${person.name}?`)){
+      return
+    }
     Server
       .remove(person)
       .then(() => {

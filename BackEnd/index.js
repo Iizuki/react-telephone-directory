@@ -2,10 +2,12 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
+//Deliver react frontend
+app.use(express.static('../FrontEnd/build'))
 
 
 
@@ -81,7 +83,6 @@ app.post('/api/persons', (request, response) => {
   persons = persons.concat(newPerson)
   response.json(newPerson)
 })
-
 
 
 app.listen(PORT, () => {

@@ -11,62 +11,46 @@ app.use(bodyParser.json())
 app.use(express.static('../FrontEnd/build'))
 
 
-
-//to be deleted
-let persons = [
-    {
-      "name": "Example Person",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Second Example",
-      "number": "050-123456",
-      "id": 2
-    },
-    {
-      "name": "My Name",
-      "number": "060-123456",
-      "id": 3
-    },
-    {
-      "name": "Longer Name",
-      "number": "070-123456",
-      "id": 4
-    }
-  ]
-
 //Route for handling whole collection requests
 app.get('/api/persons', (req, res) => {
   Person
     .find({})
-    .then(people => res.json(people))
-    .catch(error => console.log(error))
+    .then(people => people.map(formatPerson))
+    .then(formattedPeople => res.json(formattedPeople))
+    .catch(error => {
+      console.log(error)
+      response.status(404).end()
+    })
 })
 
-//TODO
+
 //Route for handling single person requests
 app.get('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  const person = persons.find(note => note.id == id)
-
-  if (person) {
-    response.json(person)
-  }else {
-    response.status(404).end()
-  }
+  const id = request.params.id 
+  Person
+    .findById(id)
+    .then(formatPerson)
+    .then(foundAndFormattedPerson => response.json(foundAndFormattedPerson))
+    .catch(error => {
+      console.log(error)
+      response.status(404).end()
+    })
 })
 
-//TODO
+
 //Route for handling the removal of individual persons
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  persons = persons.filter(person => person.id != id)
-
-  response.status(204).end()
+  Person
+    .findByIdAndRemove(id)
+    .then(result => response.status(204).end())
+    .catch(error => {
+      console.log(error)
+      response.status(400).end()
+    })
 })
 
-//TODO
+
 //Route handling the addition of new persons
 app.post('/api/persons', (request, response) => {
   const body = request.body
@@ -78,21 +62,30 @@ app.post('/api/persons', (request, response) => {
   else if (!body.number){
     return response.status(400).json({error: 'number missing'})
   }
-  else if (persons.find(person => person.name === body.name)) {
-    return response.status(400).json({error: 'name must be unique'})
-  }
 
-  const newPerson = {
+  const newPerson = new Person({
     name: body.name,
     number: body.number,
-    id: Math.floor((Math.random() * 1000) + 1)
-  }
+  })
 
-  persons = persons.concat(newPerson)
-  response.json(newPerson)
+  //Saving the person to DB
+  newPerson
+    .save()
+    .then(formatPerson)
+    .then(savedAndFormattedPerson => response.json(savedAndFormattedPerson))
+    .catch(error => console.log(error))
 })
 
+//Trims a bit the object returned by the mongoDB
+const formatPerson = person => {
+  return {
+    name: person.name,
+    number: person.number,
+    id: person._id
+  }
+}
 
+//Starting the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })

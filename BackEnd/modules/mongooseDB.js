@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 //Database connection
 const dburl = process.env.MONGODBURL
-mongoose.connect(dburl, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(dburl, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 
 const personSchema = new mongoose.Schema({
   name: String,
